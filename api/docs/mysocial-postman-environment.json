@@ -1,0 +1,28 @@
+{
+  "id": "mysocial-env-001",
+  "name": "MySocialAPI Local",
+  "values": [
+    { "key": "baseUrl", "value": "http://localhost:3000", "enabled": true },
+    { "key": "userAdminId", "value": "", "enabled": true },
+    { "key": "userMemberId", "value": "", "enabled": true },
+    { "key": "groupId", "value": "", "enabled": true },
+    { "key": "eventId", "value": "", "enabled": true },
+    { "key": "participantId", "value": "", "enabled": true },
+    { "key": "pollId", "value": "", "enabled": true },
+    { "key": "pollQuestionId", "value": "", "enabled": true },
+    { "key": "pollOptionId", "value": "", "enabled": true },
+    { "key": "pollResponseId", "value": "", "enabled": true },
+    { "key": "ticketTypeId", "value": "", "enabled": true },
+    { "key": "ticketId", "value": "", "enabled": true },
+    { "key": "albumId", "value": "", "enabled": true },
+    { "key": "photoId", "value": "", "enabled": true },
+    { "key": "shoppingItemId", "value": "", "enabled": true },
+    { "key": "carpoolOfferId", "value": "", "enabled": true },
+    { "key": "discussionThreadId", "value": "", "enabled": true },
+    { "key": "discussionMessageId", "value": "", "enabled": true }
+  ],
+  "_postman_variable_scope": "environment",
+  "_postman_exported_at": "2025-10-31T11:00:00.000Z",
+  "_postman_exported_using": "Custom generator",
+  "version": 2
+}

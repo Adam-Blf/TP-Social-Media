@@ -1,0 +1,116 @@
+{
+  "_postman_variable_scope": "environment",
+  "_postman_exported_at": "2025-10-31T10:00:00.000Z",
+  "_postman_exported_using": "Postman/11.0.0",
+  "name": "API Social Media - Local",
+  "values": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:3000",
+      "type": "default",
+      "enabled": true
+    },
+    {
+      "key": "userAdminId",
+      "value": "",
+      "type": "default",
+      "enabled": true
+    },
+    {
+      "key": "userMemberId",
+      "value": "",
+      "type": "default",
+      "enabled": true
+    },
+    {
+      "key": "groupId",
+      "value": "",
+      "type": "default",
+      "enabled": true
+    },
+    {
+      "key": "eventId",
+      "value": "",
+      "type": "default",
+      "enabled": true
+    },
+    {
+      "key": "participantId",
+      "value": "",
+      "type": "default",
+      "enabled": true
+    },
+    {
+      "key": "discussionThreadId",
+      "value": "",
+      "type": "default",
+      "enabled": true
+    },
+    {
+      "key": "discussionMessageId",
+      "value": "",
+      "type": "default",
+      "enabled": true
+    },
+    {
+      "key": "pollId",
+      "value": "",
+      "type": "default",
+      "enabled": true
+    },
+    {
+      "key": "pollQuestionId",
+      "value": "",
+      "type": "default",
+      "enabled": true
+    },
+    {
+      "key": "pollOptionId",
+      "value": "",
+      "type": "default",
+      "enabled": true
+    },
+    {
+      "key": "pollResponseId",
+      "value": "",
+      "type": "default",
+      "enabled": true
+    },
+    {
+      "key": "ticketTypeId",
+      "value": "",
+      "type": "default",
+      "enabled": true
+    },
+    {
+      "key": "ticketId",
+      "value": "",
+      "type": "default",
+      "enabled": true
+    },
+    {
+      "key": "albumId",
+      "value": "",
+      "type": "default",
+      "enabled": true
+    },
+    {
+      "key": "photoId",
+      "value": "",
+      "type": "default",
+      "enabled": true
+    },
+    {
+      "key": "shoppingItemId",
+      "value": "",
+      "type": "default",
+      "enabled": true
+    },
+    {
+      "key": "carpoolOfferId",
+      "value": "",
+      "type": "default",
+      "enabled": true
+    }
+  ]
+}

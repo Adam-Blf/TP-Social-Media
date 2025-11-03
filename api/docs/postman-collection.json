@@ -1,0 +1,838 @@
+{
+  "info": {
+    "_postman_id": "5d2f6c3a-2acd-4737-9e02-04b47e2ef001",
+    "name": "API Social Media - Tests",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": "Collection de requêtes pour valider l'API Social Media (TP)."
+  },
+  "item": [
+    {
+      "name": "01 - Healthcheck",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/health",
+          "host": ["{{baseUrl}}"],
+          "path": ["health"]
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"Status code is 200\", function () {",
+              "  pm.response.to.have.status(200);",
+              "});"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "02 - Créer utilisateur admin",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"firstName\": \"Adam\",\n  \"lastName\": \"Beloucif\",\n  \"email\": \"adam.admin@example.com\",\n  \"password\": \"secret123\",\n  \"city\": \"Paris\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{baseUrl}}/users",
+          "host": ["{{baseUrl}}"],
+          "path": ["users"]
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"Status code is 201\", function () {",
+              "  pm.response.to.have.status(201);",
+              "});",
+              "let json = {};",
+              "try { json = pm.response.json(); } catch (e) {};",
+              "const id = json.id || json._id;",
+              "if (id) { pm.environment.set('userAdminId', id); }"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "03 - Créer utilisateur membre",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"firstName\": \"Membre\",\n  \"lastName\": \"Secondaire\",\n  \"email\": \"membre@example.com\",\n  \"password\": \"secret123\",\n  \"city\": \"Lyon\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{baseUrl}}/users",
+          "host": ["{{baseUrl}}"],
+          "path": ["users"]
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"Status code is 201\", function () {",
+              "  pm.response.to.have.status(201);",
+              "});",
+              "let json = {};",
+              "try { json = pm.response.json(); } catch (e) {};",
+              "const id = json.id || json._id;",
+              "if (id) { pm.environment.set('userMemberId', id); }"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "04 - Lister les utilisateurs",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/users",
+          "host": ["{{baseUrl}}"],
+          "path": ["users"]
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"Status code is 200\", function () {",
+              "  pm.response.to.have.status(200);",
+              "});"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "05 - Créer un groupe",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"name\": \"Team Facebook\",\n  \"description\": \"Organisation du lancement\",\n  \"type\": \"public\",\n  \"allowMemberPosts\": true,\n  \"allowMemberEvents\": true,\n  \"allowExternalSharing\": true,\n  \"members\": [\n    { \"user\": \"{{userAdminId}}\", \"role\": \"admin\" },\n    { \"user\": \"{{userMemberId}}\", \"role\": \"member\" }\n  ]\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{baseUrl}}/groups",
+          "host": ["{{baseUrl}}"],
+          "path": ["groups"]
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"Status code is 201\", function () {",
+              "  pm.response.to.have.status(201);",
+              "});",
+              "let json = {};",
+              "try { json = pm.response.json(); } catch (e) {};",
+              "const id = json.id || json._id;",
+              "if (id) { pm.environment.set('groupId', id); }"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "06 - Lister les groupes",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/groups",
+          "host": ["{{baseUrl}}"],
+          "path": ["groups"]
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"Status code is 200\", function () {",
+              "  pm.response.to.have.status(200);",
+              "});"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "07 - Créer un événement via le groupe",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"name\": \"Lancement plateforme\",\n  \"description\": \"Présentation de la nouvelle API\",\n  \"startDate\": \"2025-11-01T18:00:00.000Z\",\n  \"endDate\": \"2025-11-01T21:00:00.000Z\",\n  \"location\": \"Paris HQ\",\n  \"createdBy\": \"{{userAdminId}}\",\n  \"organizers\": [\"{{userAdminId}}\"],\n  \"settings\": {\n    \"shoppingListEnabled\": true,\n    \"carpoolingEnabled\": true,\n    \"ticketingEnabled\": true\n  }\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{baseUrl}}/groups/{{groupId}}/events",
+          "host": ["{{baseUrl}}"],
+          "path": ["groups", "{{groupId}}", "events"]
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"Status code is 201\", function () {",
+              "  pm.response.to.have.status(201);",
+              "});",
+              "let json = {};",
+              "try { json = pm.response.json(); } catch (e) {};",
+              "const id = json.id || json._id;",
+              "if (id) { pm.environment.set('eventId', id); }"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "08 - Lister les événements",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/events",
+          "host": ["{{baseUrl}}"],
+          "path": ["events"]
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"Status code is 200\", function () {",
+              "  pm.response.to.have.status(200);",
+              "});"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "09 - Ajouter un participant à l'événement",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"user\": \"{{userMemberId}}\",\n  \"status\": \"going\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{baseUrl}}/events/{{eventId}}/participants",
+          "host": ["{{baseUrl}}"],
+          "path": ["events", "{{eventId}}", "participants"]
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"Status code is 201\", function () {",
+              "  pm.response.to.have.status(201);",
+              "});",
+              "let json = {};",
+              "try { json = pm.response.json(); } catch (e) {};",
+              "if (json && Array.isArray(json.participants) && json.participants.length) {",
+              "  const participant = json.participants[json.participants.length - 1];",
+              "  const pid = participant && (participant.id || participant._id);",
+              "  if (pid) { pm.environment.set('participantId', pid); }",
+              "}"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "10 - Consulter un événement",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/events/{{eventId}}",
+          "host": ["{{baseUrl}}"],
+          "path": ["events", "{{eventId}}"]
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"Status code is 200\", function () {",
+              "  pm.response.to.have.status(200);",
+              "});"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "11 - Créer un sondage",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"title\": \"Choix du traiteur\",\n  \"description\": \"Vote pour le menu du lancement\",\n  \"createdBy\": \"{{userAdminId}}\",\n  \"questions\": [\n    {\n      \"text\": \"Menu préféré\",\n      \"options\": [\n        { \"label\": \"Buffet froid\" },\n        { \"label\": \"Tapas\" },\n        { \"label\": \"Street food\" }\n      ]\n    }\n  ]\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{baseUrl}}/events/{{eventId}}/polls",
+          "host": ["{{baseUrl}}"],
+          "path": ["events", "{{eventId}}", "polls"]
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"Status code is 201\", function () {",
+              "  pm.response.to.have.status(201);",
+              "});",
+              "let json = {};",
+              "try { json = pm.response.json(); } catch (e) {};",
+              "const pollId = json.id || json._id;",
+              "if (pollId) { pm.environment.set('pollId', pollId); }",
+              "if (json.questions && json.questions.length) {",
+              "  const q = json.questions[0];",
+              "  const qId = q.id || q._id;",
+              "  if (qId) { pm.environment.set('pollQuestionId', qId); }",
+              "  if (q.options && q.options.length) {",
+              "    const opt = q.options[0];",
+              "    const optId = opt.id || opt._id;",
+              "    if (optId) { pm.environment.set('pollOptionId', optId); }",
+              "  }",
+              "}"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "12 - Répondre au sondage",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"respondent\": \"{{userMemberId}}\",\n  \"answers\": [\n    {\n      \"questionId\": \"{{pollQuestionId}}\",\n      \"optionId\": \"{{pollOptionId}}\"\n    }\n  ]\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{baseUrl}}/events/{{eventId}}/polls/{{pollId}}/responses",
+          "host": ["{{baseUrl}}"],
+          "path": ["events", "{{eventId}}", "polls", "{{pollId}}", "responses"]
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"Status code is 201\", function () {",
+              "  pm.response.to.have.status(201);",
+              "});",
+              "let json = {};",
+              "try { json = pm.response.json(); } catch (e) {};",
+              "const id = json.id || json._id;",
+              "if (id) { pm.environment.set('pollResponseId', id); }"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "13 - Créer un type de billet",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"name\": \"Entrée VIP\",\n  \"price\": 49.9,\n  \"currency\": \"EUR\",\n  \"quantity\": 50,\n  \"createdBy\": \"{{userAdminId}}\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{baseUrl}}/events/{{eventId}}/ticketing/types",
+          "host": ["{{baseUrl}}"],
+          "path": ["events", "{{eventId}}", "ticketing", "types"]
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"Status code is 201\", function () {",
+              "  pm.response.to.have.status(201);",
+              "});",
+              "let json = {};",
+              "try { json = pm.response.json(); } catch (e) {};",
+              "const id = json.id || json._id;",
+              "if (id) { pm.environment.set('ticketTypeId', id); }"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "14 - Acheter un billet",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"ticketType\": \"{{ticketTypeId}}\",\n  \"attendee\": {\n    \"firstName\": \"Invité\",\n    \"lastName\": \"Premium\",\n    \"email\": \"invite.vipp@example.com\",\n    \"address\": {\n      \"street\": \"10 rue des Fleurs\",\n      \"postalCode\": \"75005\",\n      \"city\": \"Paris\",\n      \"country\": \"France\"\n    }\n  }\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{baseUrl}}/events/{{eventId}}/ticketing/tickets",
+          "host": ["{{baseUrl}}"],
+          "path": ["events", "{{eventId}}", "ticketing", "tickets"]
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"Status code is 201\", function () {",
+              "  pm.response.to.have.status(201);",
+              "});",
+              "let json = {};",
+              "try { json = pm.response.json(); } catch (e) {};",
+              "const id = json.id || json._id;",
+              "if (id) { pm.environment.set('ticketId', id); }"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "15 - Créer un album photo",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"title\": \"Souvenirs lancement\",\n  \"description\": \"Photos officielles\",\n  \"createdBy\": \"{{userAdminId}}\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{baseUrl}}/events/{{eventId}}/albums",
+          "host": ["{{baseUrl}}"],
+          "path": ["events", "{{eventId}}", "albums"]
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"Status code is 201\", function () {",
+              "  pm.response.to.have.status(201);",
+              "});",
+              "let json = {};",
+              "try { json = pm.response.json(); } catch (e) {};",
+              "const id = json.id || json._id;",
+              "if (id) { pm.environment.set('albumId', id); }"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "16 - Ajouter une photo",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"url\": \"https://cdn.example.com/photos/photo01.jpg\",\n  \"caption\": \"Arrivée des équipes\",\n  \"uploadedBy\": \"{{userAdminId}}\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{baseUrl}}/events/{{eventId}}/albums/{{albumId}}/photos",
+          "host": ["{{baseUrl}}"],
+          "path": ["events", "{{eventId}}", "albums", "{{albumId}}", "photos"]
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"Status code is 201\", function () {",
+              "  pm.response.to.have.status(201);",
+              "});",
+              "let json = {};",
+              "try { json = pm.response.json(); } catch (e) {};",
+              "if (json && json.photos && json.photos.length) {",
+              "  const photo = json.photos[json.photos.length - 1];",
+              "  const pid = photo && (photo.id || photo._id);",
+              "  if (pid) { pm.environment.set('photoId', pid); }",
+              "}"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "17 - Commenter une photo",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"author\": \"{{userMemberId}}\",\n  \"body\": \"Super ambiance !\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{baseUrl}}/events/{{eventId}}/albums/{{albumId}}/photos/{{photoId}}/comments",
+          "host": ["{{baseUrl}}"],
+          "path": ["events", "{{eventId}}", "albums", "{{albumId}}", "photos", "{{photoId}}", "comments"]
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"Status code is 201\", function () {",
+              "  pm.response.to.have.status(201);",
+              "});"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "18 - Ajouter un élément à la shopping list",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"contributor\": \"{{userMemberId}}\",\n  \"name\": \"Pack de boissons\",\n  \"quantity\": \"6 bouteilles\",\n  \"arrivalTime\": \"19:00\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{baseUrl}}/events/{{eventId}}/shopping-list",
+          "host": ["{{baseUrl}}"],
+          "path": ["events", "{{eventId}}", "shopping-list"]
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"Status code is 201\", function () {",
+              "  pm.response.to.have.status(201);",
+              "});",
+              "let json = {};",
+              "try { json = pm.response.json(); } catch (e) {};",
+              "const id = json.id || json._id;",
+              "if (id) { pm.environment.set('shoppingItemId', id); }"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "19 - Publier une offre de covoiturage",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"driver\": \"{{userAdminId}}\",\n  \"departureLocation\": \"Lille Flandres\",\n  \"departureTime\": \"2025-11-01T15:30:00.000Z\",\n  \"price\": 12,\n  \"availableSeats\": 3,\n  \"maxDeviationMinutes\": 20,\n  \"notes\": \"Passage possible par Roubaix\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{baseUrl}}/events/{{eventId}}/carpool",
+          "host": ["{{baseUrl}}"],
+          "path": ["events", "{{eventId}}", "carpool"]
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"Status code is 201\", function () {",
+              "  pm.response.to.have.status(201);",
+              "});",
+              "let json = {};",
+              "try { json = pm.response.json(); } catch (e) {};",
+              "const id = json.id || json._id;",
+              "if (id) { pm.environment.set('carpoolOfferId', id); }"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "20 - Ouvrir une discussion d'événement",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"title\": \"Fil principal\",\n  \"createdBy\": \"{{userAdminId}}\",\n  \"message\": \"Bienvenue sur l'événement !\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{baseUrl}}/events/{{eventId}}/discussions",
+          "host": ["{{baseUrl}}"],
+          "path": ["events", "{{eventId}}", "discussions"]
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"Status code is 201\", function () {",
+              "  pm.response.to.have.status(201);",
+              "});",
+              "let json = {};",
+              "try { json = pm.response.json(); } catch (e) {};",
+              "const id = json.id || json._id;",
+              "if (id) { pm.environment.set('discussionThreadId', id); }"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "21 - Ajouter un message dans la discussion",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"author\": \"{{userMemberId}}\",\n  \"content\": \"Hâte d'y être !\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{baseUrl}}/events/{{eventId}}/discussions/{{discussionThreadId}}/messages",
+          "host": ["{{baseUrl}}"],
+          "path": ["events", "{{eventId}}", "discussions", "{{discussionThreadId}}", "messages"]
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"Status code is 201\", function () {",
+              "  pm.response.to.have.status(201);",
+              "});",
+              "let json = {};",
+              "try { json = pm.response.json(); } catch (e) {};",
+              "if (json && Array.isArray(json.messages) && json.messages.length) {",
+              "  const message = json.messages[json.messages.length - 1];",
+              "  const mid = message && (message.id || message._id);",
+              "  if (mid) { pm.environment.set('discussionMessageId', mid); }",
+              "}"
+            ]
+          }
+        }
+      ]
+    }
+  ]
+}

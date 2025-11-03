@@ -1,0 +1,360 @@
+{
+  "info": {
+    "_postman_id": "mysocial-collection-001",
+    "name": "MySocialAPI Collection",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": "Collection Postman adaptée à l'API My Social Networks (Express/Mongo, sans auth)."
+  },
+  "item": [
+    {
+      "name": "01 - Healthcheck",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/health",
+          "host": ["{{baseUrl}}"],
+          "path": ["health"]
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"200 attendu\", () => pm.response.to.have.status(200));"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "02 - Users",
+      "item": [
+        {
+          "name": "Créer utilisateur admin",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"firstName\": \"Orga\",\n  \"lastName\": \"Admin\",\n  \"email\": \"orga@test.com\",\n  \"password\": \"secret123\"\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/users", "host": ["{{baseUrl}}"], "path": ["users"] }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"201\", () => pm.response.to.have.status(201));",
+                  "const id = pm.response.json().id;",
+                  "pm.environment.set('userAdminId', id);"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Créer utilisateur membre",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"firstName\": \"Membre\",\n  \"lastName\": \"Secondaire\",\n  \"email\": \"member@test.com\",\n  \"password\": \"secret123\"\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/users", "host": ["{{baseUrl}}"], "path": ["users"] }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"201\", () => pm.response.to.have.status(201));",
+                  "pm.environment.set('userMemberId', pm.response.json().id);"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Lister utilisateurs",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": { "raw": "{{baseUrl}}/users", "host": ["{{baseUrl}}"], "path": ["users"] }
+          }
+        }
+      ]
+    },
+    {
+      "name": "03 - Groupes",
+      "item": [
+        {
+          "name": "Créer groupe",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Groupe Public\",\n  \"description\": \"Tests TP\",\n  \"type\": \"public\",\n  \"allowMemberPosts\": true,\n  \"allowMemberEvents\": true,\n  \"allowExternalSharing\": true,\n  \"members\": [\n    { \"user\": \"{{userAdminId}}\", \"role\": \"admin\" },\n    { \"user\": \"{{userMemberId}}\", \"role\": \"member\" }\n  ]\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/groups", "host": ["{{baseUrl}}"], "path": ["groups"] }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"201\", () => pm.response.to.have.status(201));",
+                  "pm.environment.set('groupId', pm.response.json().id);"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Lister groupes",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": { "raw": "{{baseUrl}}/groups", "host": ["{{baseUrl}}"], "path": ["groups"] }
+          }
+        }
+      ]
+    },
+    {
+      "name": "04 - Événements",
+      "item": [
+        {
+          "name": "Créer événement via groupe",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Soirée lancement\",\n  \"description\": \"Présentation produit\",\n  \"startDate\": \"2025-12-01T18:00:00.000Z\",\n  \"endDate\": \"2025-12-01T22:00:00.000Z\",\n  \"location\": \"Paris\",\n  \"createdBy\": \"{{userAdminId}}\",\n  \"organizers\": [\"{{userAdminId}}\"],\n  \"settings\": {\n    \"shoppingListEnabled\": true,\n    \"carpoolingEnabled\": true,\n    \"ticketingEnabled\": true\n  }\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/groups/{{groupId}}/events",
+              "host": ["{{baseUrl}}"],
+              "path": ["groups", "{{groupId}}", "events"]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"201\", () => pm.response.to.have.status(201));",
+                  "pm.environment.set('eventId', pm.response.json().id);"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Ajouter participant",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"user\": \"{{userMemberId}}\",\n  \"status\": \"going\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/events/{{eventId}}/participants",
+              "host": ["{{baseUrl}}"],
+              "path": ["events", "{{eventId}}", "participants"]
+            }
+          }
+        },
+        {
+          "name": "Consulter événement",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": { "raw": "{{baseUrl}}/events/{{eventId}}", "host": ["{{baseUrl}}"], "path": ["events", "{{eventId}}"] }
+          }
+        }
+      ]
+    },
+    {
+      "name": "05 - Sondages",
+      "item": [
+        {
+          "name": "Créer sondage",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"Choix traiteur\",\n  \"createdBy\": \"{{userAdminId}}\",\n  \"questions\": [\n    {\n      \"text\": \"Menu préfér��\",\n      \"options\": [ { \"label\": \"Buffet\" }, { \"label\": \"Tapas\" } ]\n    }\n  ]\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/events/{{eventId}}/polls", "host": ["{{baseUrl}}"], "path": ["events", "{{eventId}}", "polls"] }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"201\", () => pm.response.to.have.status(201));",
+                  "const r = pm.response.json();",
+                  "pm.environment.set('pollId', r.id);",
+                  "pm.environment.set('pollQuestionId', r.questions[0].id);",
+                  "pm.environment.set('pollOptionId', r.questions[0].options[0].id);"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Répondre au sondage",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"respondent\": \"{{userMemberId}}\",\n  \"answers\": [\n    {\n      \"questionId\": \"{{pollQuestionId}}\",\n      \"optionId\": \"{{pollOptionId}}\"\n    }\n  ]\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/events/{{eventId}}/polls/{{pollId}}/responses",
+              "host": ["{{baseUrl}}"],
+              "path": ["events", "{{eventId}}", "polls", "{{pollId}}", "responses"]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"201\", () => pm.response.to.have.status(201));",
+                  "pm.environment.set('pollResponseId', pm.response.json().id);"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "06 - Billetterie",
+      "item": [
+        {
+          "name": "Créer type billet",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Entrée VIP\",\n  \"price\": 49.9,\n  \"quantity\": 50,\n  \"createdBy\": \"{{userAdminId}}\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/events/{{eventId}}/ticketing/types",
+              "host": ["{{baseUrl}}"],
+              "path": ["events", "{{eventId}}", "ticketing", "types"]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"201\", () => pm.response.to.have.status(201));",
+                  "pm.environment.set('ticketTypeId', pm.response.json().id);"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Acheter billet",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"ticketType\": \"{{ticketTypeId}}\",\n  \"attendee\": {\n    \"firstName\": \"Guest\",\n    \"lastName\": \"One\",\n    \"email\": \"guest.one@example.com\"\n  }\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/events/{{eventId}}/ticketing/tickets",
+              "host": ["{{baseUrl}}"],
+              "path": ["events", "{{eventId}}", "ticketing", "tickets"]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"201\", () => pm.response.to.have.status(201));",
+                  "pm.environment.set('ticketId', pm.response.json().id);"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "07 - Albums",
+      "item": [
+        {
+          "name": "Créer album",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"Album de l'événement\",\n  \"createdBy\": \"{{userAdminId}}\"\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/events/{{eventId}}/albums", "host": ["{{baseUrl}}"], "path": ["events", "{{eventId}}", "albums"] }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"201\", () => pm.response.to.have.status(201));",
+                  "pm.environment.set('albumId', pm.response.json().id);"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Ajouter photo",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"url\": \"https://picsum.photos/600/400\",\n  \"uploadedBy\": \"{{userAdminId}}\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/events/{{eventId}}/albums/{{albumId}}/photos",
+              "host": ["{{baseUrl}}"],
+              "path": ["events", "{{eventId}}", "albums", "{{albumId}}", "photos"]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"201\", () => pm.response.to.have.status(201));",
+                  "const photos = pm.response.json().photos;",
+                  "const last = photos[photos.length - 1];",
+                  "pm.environment.set('photoId', last.id);
