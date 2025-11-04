@@ -1,0 +1,2007 @@
+{
+  "info": {
+    "_postman_id": "ba4a0e8a-2446-4d1a-8f7f-b7d15f6e9001",
+    "name": "TP Reseau Social - Localhost",
+    "description": "Collection Postman complete pour le TP My Social Networks en local (http://localhost:3000).",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "00 - Systeme",
+      "item": [
+        {
+          "name": "Etat de sante (GET)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/health",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "health"
+              ]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status 200\", function () {",
+                  "  pm.response.to.have.status(200);",
+                  "});"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "01 - Utilisateurs",
+      "description": "Cycle de vie complet des utilisateurs (admins, membres, invites).",
+      "item": [
+        {
+          "name": "Creer utilisateur admin (POST)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/users",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "users"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"firstName\": \"Ada\",\n  \"lastName\": \"Admin\",\n  \"email\": \"ada.admin@example.com\",\n  \"password\": \"Secret123!\",\n  \"avatarUrl\": \"https://picsum.photos/200?image=1\",\n  \"bio\": \"Main organiser\",\n  \"city\": \"Paris\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status 201\", function () {",
+                  "  pm.response.to.have.status(201);",
+                  "});",
+                  "var json = {};",
+                  "try { json = pm.response.json(); } catch (err) { json = {}; }",
+                  "var id = json.id || json._id;",
+                  "if (id) {",
+                  "  pm.collectionVariables.set(\"userAdminId\", String(id));",
+                  "}"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Creer utilisateur membre (POST)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/users",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "users"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"firstName\": \"Mia\",\n  \"lastName\": \"Member\",\n  \"email\": \"mia.member@example.com\",\n  \"password\": \"Secret123!\",\n  \"avatarUrl\": \"https://picsum.photos/200?image=2\",\n  \"bio\": \"Community member\",\n  \"city\": \"Lyon\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status 201\", function () {",
+                  "  pm.response.to.have.status(201);",
+                  "});",
+                  "var json = {};",
+                  "try { json = pm.response.json(); } catch (err) { json = {}; }",
+                  "var id = json.id || json._id;",
+                  "if (id) {",
+                  "  pm.collectionVariables.set(\"userMemberId\", String(id));",
+                  "}"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Creer utilisateur invite (POST)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/users",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "users"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"firstName\": \"Gus\",\n  \"lastName\": \"Guest\",\n  \"email\": \"gus.guest@example.com\",\n  \"password\": \"Secret123!\",\n  \"avatarUrl\": \"https://picsum.photos/200?image=3\",\n  \"bio\": \"Occasional guest\",\n  \"city\": \"Marseille\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status 201\", function () {",
+                  "  pm.response.to.have.status(201);",
+                  "});",
+                  "var json = {};",
+                  "try { json = pm.response.json(); } catch (err) { json = {}; }",
+                  "var id = json.id || json._id;",
+                  "if (id) {",
+                  "  pm.collectionVariables.set(\"userGuestId\", String(id));",
+                  "}"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Lister utilisateurs (GET)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/users",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "users"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Detail utilisateur admin (GET)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/users/{{userAdminId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "users",
+                "{{userAdminId}}"
+              ]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status 200\", function () {",
+                  "  pm.response.to.have.status(200);",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Remplacer utilisateur (PUT - gabarit)",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/users/{{userMemberId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "users",
+                "{{userMemberId}}"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"firstName\": \"Mia\",\n  \"lastName\": \"Member\",\n  \"email\": \"mia.member@example.com\",\n  \"password\": \"Secret123!\",\n  \"avatarUrl\": \"https://picsum.photos/200?image=22\",\n  \"bio\": \"Full replace payload\",\n  \"city\": \"Lyon\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "description": "Gabarit si un endpoint PUT complet est expose ulterieurement."
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Attente 200 si PUT supporte sinon 404\", function () {",
+                  "  pm.expect([200, 404]).to.include(pm.response.code);",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Mettre a jour utilisateur (PATCH)",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/users/{{userMemberId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "users",
+                "{{userMemberId}}"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"bio\": \"Updated member bio\",\n  \"languages\": [\"fr\", \"en\"]\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status 200\", function () {",
+                  "  pm.response.to.have.status(200);",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Supprimer utilisateur invite (DELETE)",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/users/{{userGuestId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "users",
+                "{{userGuestId}}"
+              ]
+            },
+            "description": "A executer apres avoir retire l invite des groupes et evenements."
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status 200 ou 404 si deja supprime\", function () {",
+                  "  pm.expect([200, 404]).to.include(pm.response.code);",
+                  "});",
+                  "if (pm.response.code === 200) {",
+                  "  pm.collectionVariables.set(\"userGuestId\", \"\");",
+                  "}"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "02 - Groupes",
+      "description": "Gestion des groupes, adhesions et discussions internes.",
+      "item": [
+        {
+          "name": "Creer groupe (POST)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/groups",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "groups"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Makers Lyon\",\n  \"description\": \"Group for local organisers\",\n  \"icon\": \"https://cdn.example.com/icons/makers.png\",\n  \"coverPhoto\": \"https://cdn.example.com/covers/makers.jpg\",\n  \"type\": \"public\",\n  \"allowMemberPosts\": true,\n  \"allowMemberEvents\": true,\n  \"allowExternalSharing\": true,\n  \"members\": [\n    { \"user\": \"{{userAdminId}}\", \"role\": \"admin\" },\n    { \"user\": \"{{userMemberId}}\", \"role\": \"member\" }\n  ]\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status 201\", function () {",
+                  "  pm.response.to.have.status(201);",
+                  "});",
+                  "var json = {};",
+                  "try { json = pm.response.json(); } catch (err) { json = {}; }",
+                  "var groupId = json.id || json._id;",
+                  "if (groupId) {",
+                  "  pm.collectionVariables.set(\"groupId\", String(groupId));",
+                  "}",
+                  "if (json.members && Array.isArray(json.members)) {",
+                  "  json.members.forEach(function (member) {",
+                  "    if (!member) { return; }",
+                  "    var memberId = member._id || member.id;",
+                  "    var userRef = null;",
+                  "    if (typeof member.user === 'string') {",
+                  "      userRef = member.user;",
+                  "    } else if (member.user) {",
+                  "      userRef = member.user.id || member.user._id;",
+                  "    }",
+                  "    if (!userRef) { return; }",
+                  "    if (userRef === pm.collectionVariables.get(\"userAdminId\")) {",
+                  "      pm.collectionVariables.set(\"groupAdminMembershipId\", String(memberId));",
+                  "    }",
+                  "    if (userRef === pm.collectionVariables.get(\"userMemberId\")) {",
+                  "      pm.collectionVariables.set(\"groupMemberMembershipId\", String(memberId));",
+                  "    }",
+                  "  });",
+                  "}"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Lister groupes (GET)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/groups",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "groups"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Detail groupe (GET)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/groups/{{groupId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "groups",
+                "{{groupId}}"
+              ]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status 200\", function () {",
+                  "  pm.response.to.have.status(200);",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Mettre a jour groupe (PATCH)",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/groups/{{groupId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "groups",
+                "{{groupId}}"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"description\": \"Updated description for the makers group\",\n  \"allowMemberPosts\": false\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status 200\", function () {",
+                  "  pm.response.to.have.status(200);",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Ajouter membre invite (POST)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/groups/{{groupId}}/members",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "groups",
+                "{{groupId}}",
+                "members"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"user\": \"{{userGuestId}}\",\n  \"role\": \"member\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status 201\", function () {",
+                  "  pm.response.to.have.status(201);",
+                  "});",
+                  "var json = {};",
+                  "try { json = pm.response.json(); } catch (err) { json = {}; }",
+                  "if (json.members && Array.isArray(json.members)) {",
+                  "  json.members.forEach(function (member) {",
+                  "    if (!member) { return; }",
+                  "    var memberId = member._id || member.id;",
+                  "    var userRef = null;",
+                  "    if (typeof member.user === 'string') {",
+                  "      userRef = member.user;",
+                  "    } else if (member.user) {",
+                  "      userRef = member.user.id || member.user._id;",
+                  "    }",
+                  "    if (userRef === pm.collectionVariables.get(\"userGuestId\")) {",
+                  "      pm.collectionVariables.set(\"groupGuestMembershipId\", String(memberId));",
+                  "    }",
+                  "  });",
+                  "}"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Promouvoir invite en admin (PATCH)",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/groups/{{groupId}}/members/{{groupGuestMembershipId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "groups",
+                "{{groupId}}",
+                "members",
+                "{{groupGuestMembershipId}}"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"role\": \"admin\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status 200\", function () {",
+                  "  pm.response.to.have.status(200);",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Retirer membre invite (DELETE)",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/groups/{{groupId}}/members/{{groupGuestMembershipId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "groups",
+                "{{groupId}}",
+                "members",
+                "{{groupGuestMembershipId}}"
+              ]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status 200\", function () {",
+                  "  pm.response.to.have.status(200);",
+                  "});",
+                  "pm.collectionVariables.set(\"groupGuestMembershipId\", \"\");"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Creer evenement groupe (POST)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/groups/{{groupId}}/events",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "groups",
+                "{{groupId}}",
+                "events"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Community meetup\",\n  \"description\": \"Group driven meetup\",\n  \"startDate\": \"2025-06-10T18:00:00.000Z\",\n  \"endDate\": \"2025-06-10T22:00:00.000Z\",\n  \"location\": \"H7 Lyon\",\n  \"createdBy\": \"{{userAdminId}}\",\n  \"organizers\": [\"{{userAdminId}}\", \"{{userMemberId}}\"],\n  \"participants\": [\n    { \"user\": \"{{userMemberId}}\", \"status\": \"going\" }\n  ],\n  \"settings\": {\n    \"allowSharing\": true,\n    \"shoppingListEnabled\": true,\n    \"carpoolingEnabled\": true,\n    \"ticketingEnabled\": true\n  },\n  \"inviteGroupMembers\": true\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status 201\", function () {",
+                  "  pm.response.to.have.status(201);",
+                  "});",
+                  "var json = {};",
+                  "try { json = pm.response.json(); } catch (err) { json = {}; }",
+                  "var eventId = json.id || json._id;",
+                  "if (eventId) {",
+                  "  pm.collectionVariables.set(\"groupEventId\", String(eventId));",
+                  "}"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Lister discussions groupe (GET)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/groups/{{groupId}}/discussions",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "groups",
+                "{{groupId}}",
+                "discussions"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Creer discussion groupe (POST)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/groups/{{groupId}}/discussions",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "groups",
+                "{{groupId}}",
+                "discussions"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"Welcome thread\",\n  \"createdBy\": \"{{userMemberId}}\",\n  \"message\": \"Happy to join this group\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status 201\", function () {",
+                  "  pm.response.to.have.status(201);",
+                  "});",
+                  "var json = {};",
+                  "try { json = pm.response.json(); } catch (err) { json = {}; }",
+                  "var threadId = json.id || json._id;",
+                  "if (threadId) {",
+                  "  pm.collectionVariables.set(\"groupThreadId\", String(threadId));",
+                  "}"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Publier message discussion groupe (POST)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/groups/{{groupId}}/discussions/{{groupThreadId}}/messages",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "groups",
+                "{{groupId}}",
+                "discussions",
+                "{{groupThreadId}}",
+                "messages"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"author\": \"{{userAdminId}}\",\n  \"content\": \"Glad to have you on board\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status 201\", function () {",
+                  "  pm.response.to.have.status(201);",
+                  "});",
+                  "var json = {};",
+                  "try { json = pm.response.json(); } catch (err) { json = {}; }",
+                  "if (json.messages && Array.isArray(json.messages)) {",
+                  "  var last = json.messages[json.messages.length - 1];",
+                  "  if (last) {",
+                  "    var messageId = last._id || last.id;",
+                  "    if (messageId) {",
+                  "      pm.collectionVariables.set(\"groupMessageId\", String(messageId));",
+                  "    }",
+                  "  }",
+                  "}"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "03 - Evenements",
+      "description": "Evenements autonomes et domaines associes (participants, sondages, billetterie...).",
+      "item": [
+        {
+          "name": "Tronc commun",
+          "item": [
+            {
+              "name": "Creer evenement (POST)",
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/events",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "events"
+                  ]
+                },
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"name\": \"Launch party\",\n  \"description\": \"Global launch event for the new service\",\n  \"startDate\": \"2025-07-01T18:30:00.000Z\",\n  \"endDate\": \"2025-07-01T23:00:00.000Z\",\n  \"location\": \"Station F\",\n  \"coverPhoto\": \"https://cdn.example.com/covers/launch.jpg\",\n  \"privacy\": \"public\",\n  \"createdBy\": \"{{userAdminId}}\",\n  \"organizers\": [\"{{userAdminId}}\"],\n  \"participants\": [\n    { \"user\": \"{{userMemberId}}\", \"status\": \"going\" }\n  ],\n  \"settings\": {\n    \"allowSharing\": true,\n    \"shoppingListEnabled\": true,\n    \"carpoolingEnabled\": true,\n    \"ticketingEnabled\": true\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "type": "text/javascript",
+                    "exec": [
+                      "pm.test(\"Status 201\", function () {",
+                      "  pm.response.to.have.status(201);",
+                      "});",
+                      "var json = {};",
+                      "try { json = pm.response.json(); } catch (err) { json = {}; }",
+                      "var eventId = json.id || json._id;",
+                      "if (eventId) {",
+                      "  pm.collectionVariables.set(\"eventId\", String(eventId));",
+                      "}",
+                      "if (json.participants && Array.isArray(json.participants)) {",
+                      "  json.participants.forEach(function (participant) {",
+                      "    if (!participant) { return; }",
+                      "    var partId = participant._id || participant.id;",
+                      "    var userRef = null;",
+                      "    if (typeof participant.user === 'string') {",
+                      "      userRef = participant.user;",
+                      "    } else if (participant.user) {",
+                      "      userRef = participant.user.id || participant.user._id;",
+                      "    }",
+                      "    if (userRef === pm.collectionVariables.get(\"userMemberId\")) {",
+                      "      pm.collectionVariables.set(\"participantMemberId\", String(partId));",
+                      "    }",
+                      "  });",
+                      "}"
+                    ]
+                  }
+                }
+              ]
+            },
+            {
+              "name": "Lister evenements (GET)",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{baseUrl}}/events",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "events"
+                  ]
+                }
+              }
+            },
+            {
+              "name": "Detail evenement (GET)",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{baseUrl}}/events/{{eventId}}",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "events",
+                    "{{eventId}}"
+                  ]
+                }
+              }
+            },
+            {
+              "name": "Filtrer evenements par confidentialite (GET)",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{baseUrl}}/events?privacy=public",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "events"
+                  ],
+                  "query": [
+                    {
+                      "key": "privacy",
+                      "value": "public"
+                    }
+                  ]
+                }
+              }
+            },
+            {
+              "name": "Mettre a jour evenement (PATCH)",
+              "request": {
+                "method": "PATCH",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/events/{{eventId}}",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "events",
+                    "{{eventId}}"
+                  ]
+                },
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"location\": \"Station F - Central hall\",\n  \"settings\": {\n    \"shoppingListEnabled\": false\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              }
+            },
+            {
+              "name": "Ajouter participant invite (POST)",
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/events/{{eventId}}/participants",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "events",
+                    "{{eventId}}",
+                    "participants"
+                  ]
+                },
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"user\": \"{{userGuestId}}\",\n  \"status\": \"interested\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "type": "text/javascript",
+                    "exec": [
+                      "pm.test(\"Status 201\", function () {",
+                      "  pm.response.to.have.status(201);",
+                      "});",
+                      "var json = {};",
+                      "try { json = pm.response.json(); } catch (err) { json = {}; }",
+                      "if (json.participants && Array.isArray(json.participants)) {",
+                      "  json.participants.forEach(function (participant) {",
+                      "    if (!participant) { return; }",
+                      "    var partId = participant._id || participant.id;",
+                      "    var userRef = null;",
+                      "    if (typeof participant.user === 'string') {",
+                      "      userRef = participant.user;",
+                      "    } else if (participant.user) {",
+                      "      userRef = participant.user.id || participant.user._id;",
+                      "    }",
+                      "    if (userRef === pm.collectionVariables.get(\"userGuestId\")) {",
+                      "      pm.collectionVariables.set(\"participantGuestId\", String(partId));",
+                      "    }",
+                      "  });",
+                      "}"
+                    ]
+                  }
+                }
+              ]
+            },
+            {
+              "name": "Mettre a jour statut participant (PATCH)",
+              "request": {
+                "method": "PATCH",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/events/{{eventId}}/participants/{{participantGuestId}}",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "events",
+                    "{{eventId}}",
+                    "participants",
+                    "{{participantGuestId}}"
+                  ]
+                },
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"status\": \"going\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              }
+            },
+            {
+              "name": "Retirer participant invite (DELETE)",
+              "request": {
+                "method": "DELETE",
+                "header": [],
+                "url": {
+                  "raw": "{{baseUrl}}/events/{{eventId}}/participants/{{participantGuestId}}",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "events",
+                    "{{eventId}}",
+                    "participants",
+                    "{{participantGuestId}}"
+                  ]
+                }
+              },
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "type": "text/javascript",
+                    "exec": [
+                      "pm.test(\"Status 200\", function () {",
+                      "  pm.response.to.have.status(200);",
+                      "});",
+                      "pm.collectionVariables.set(\"participantGuestId\", \"\");"
+                    ]
+                  }
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "name": "Sondages",
+          "item": [
+            {
+              "name": "Creer sondage (POST)",
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/events/{{eventId}}/polls",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "events",
+                    "{{eventId}}",
+                    "polls"
+                  ]
+                },
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"title\": \"Food preferences\",\n  \"description\": \"Help us decide the menu\",\n  \"createdBy\": \"{{userAdminId}}\",\n  \"questions\": [\n    {\n      \"text\": \"What should we serve?\",\n      \"options\": [\n        { \"label\": \"Street food\" },\n        { \"label\": \"Buffet\" },\n        { \"label\": \"Cocktail dinner\" }\n      ]\n    }\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "type": "text/javascript",
+                    "exec": [
+                      "pm.test(\"Status 201\", function () {",
+                      "  pm.response.to.have.status(201);",
+                      "});",
+                      "var json = {};",
+                      "try { json = pm.response.json(); } catch (err) { json = {}; }",
+                      "var pollId = json.id || json._id;",
+                      "if (pollId) {",
+                      "  pm.collectionVariables.set(\"pollId\", String(pollId));",
+                      "}",
+                      "if (json.questions && Array.isArray(json.questions) && json.questions.length) {",
+                      "  var q = json.questions[0];",
+                      "  if (q) {",
+                      "    var questionId = q._id || q.id;",
+                      "    if (questionId) {",
+                      "      pm.collectionVariables.set(\"pollQuestionId\", String(questionId));",
+                      "    }",
+                      "    if (q.options && Array.isArray(q.options) && q.options.length) {",
+                      "      var option = q.options[0];",
+                      "      var optionId = option._id || option.id;",
+                      "      if (optionId) {",
+                      "        pm.collectionVariables.set(\"pollOptionId\", String(optionId));",
+                      "      }",
+                      "    }",
+                      "  }",
+                      "}"
+                    ]
+                  }
+                }
+              ]
+            },
+            {
+              "name": "Lister sondages (GET)",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{baseUrl}}/events/{{eventId}}/polls",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "events",
+                    "{{eventId}}",
+                    "polls"
+                  ]
+                }
+              }
+            },
+            {
+              "name": "Repondre sondage (POST)",
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/events/{{eventId}}/polls/{{pollId}}/responses",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "events",
+                    "{{eventId}}",
+                    "polls",
+                    "{{pollId}}",
+                    "responses"
+                  ]
+                },
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"respondent\": \"{{userMemberId}}\",\n  \"answers\": [\n    {\n      \"questionId\": \"{{pollQuestionId}}\",\n      \"optionId\": \"{{pollOptionId}}\"\n    }\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              }
+            }
+          ]
+        },
+        {
+          "name": "Billetterie",
+          "item": [
+            {
+              "name": "Lister types de billets (GET)",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{baseUrl}}/events/{{eventId}}/ticketing/types",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "events",
+                    "{{eventId}}",
+                    "ticketing",
+                    "types"
+                  ]
+                }
+              }
+            },
+            {
+              "name": "Creer type de billet (POST)",
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/events/{{eventId}}/ticketing/types",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "events",
+                    "{{eventId}}",
+                    "ticketing",
+                    "types"
+                  ]
+                },
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"name\": \"General admission\",\n  \"price\": 30,\n  \"currency\": \"EUR\",\n  \"quantity\": 200,\n  \"createdBy\": \"{{userAdminId}}\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "type": "text/javascript",
+                    "exec": [
+                      "pm.test(\"Status 201\", function () {",
+                      "  pm.response.to.have.status(201);",
+                      "});",
+                      "var json = {};",
+                      "try { json = pm.response.json(); } catch (err) { json = {}; }",
+                      "var typeId = json.id || json._id;",
+                      "if (typeId) {",
+                      "  pm.collectionVariables.set(\"ticketTypeId\", String(typeId));",
+                      "}"
+                    ]
+                  }
+                }
+              ]
+            },
+            {
+              "name": "Acheter billet (POST)",
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/events/{{eventId}}/ticketing/tickets",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "events",
+                    "{{eventId}}",
+                    "ticketing",
+                    "tickets"
+                  ]
+                },
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"ticketType\": \"{{ticketTypeId}}\",\n  \"attendee\": {\n    \"firstName\": \"Lara\",\n    \"lastName\": \"Lopez\",\n    \"email\": \"lara.lopez@example.com\",\n    \"address\": {\n      \"street\": \"10 Rue Victor Hugo\",\n      \"postalCode\": \"69002\",\n      \"city\": \"Lyon\",\n      \"country\": \"France\"\n    }\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              }
+            }
+          ]
+        },
+        {
+          "name": "Albums photo",
+          "item": [
+            {
+              "name": "Creer album photo (POST)",
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/events/{{eventId}}/albums",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "events",
+                    "{{eventId}}",
+                    "albums"
+                  ]
+                },
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"title\": \"Launch photos\",\n  \"description\": \"Pictures from the launch party\",\n  \"createdBy\": \"{{userMemberId}}\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "type": "text/javascript",
+                    "exec": [
+                      "pm.test(\"Status 201\", function () {",
+                      "  pm.response.to.have.status(201);",
+                      "});",
+                      "var json = {};",
+                      "try { json = pm.response.json(); } catch (err) { json = {}; }",
+                      "var albumId = json.id || json._id;",
+                      "if (albumId) {",
+                      "  pm.collectionVariables.set(\"albumId\", String(albumId));",
+                      "}"
+                    ]
+                  }
+                }
+              ]
+            },
+            {
+              "name": "Lister albums photo (GET)",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{baseUrl}}/events/{{eventId}}/albums",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "events",
+                    "{{eventId}}",
+                    "albums"
+                  ]
+                }
+              }
+            },
+            {
+              "name": "Ajouter photo a album (POST)",
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/events/{{eventId}}/albums/{{albumId}}/photos",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "events",
+                    "{{eventId}}",
+                    "albums",
+                    "{{albumId}}",
+                    "photos"
+                  ]
+                },
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"url\": \"https://cdn.example.com/photos/launch-01.jpg\",\n  \"caption\": \"Opening keynote\",\n  \"uploadedBy\": \"{{userMemberId}}\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "type": "text/javascript",
+                    "exec": [
+                      "pm.test(\"Status 201\", function () {",
+                      "  pm.response.to.have.status(201);",
+                      "});",
+                      "var json = {};",
+                      "try { json = pm.response.json(); } catch (err) { json = {}; }",
+                      "if (json.photos && Array.isArray(json.photos) && json.photos.length) {",
+                      "  var photo = json.photos[json.photos.length - 1];",
+                      "  if (photo) {",
+                      "    var photoId = photo._id || photo.id;",
+                      "    if (photoId) {",
+                      "      pm.collectionVariables.set(\"photoId\", String(photoId));",
+                      "    }",
+                      "  }",
+                      "}"
+                    ]
+                  }
+                }
+              ]
+            },
+            {
+              "name": "Commenter photo (POST)",
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/events/{{eventId}}/albums/{{albumId}}/photos/{{photoId}}/comments",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "events",
+                    "{{eventId}}",
+                    "albums",
+                    "{{albumId}}",
+                    "photos",
+                    "{{photoId}}",
+                    "comments"
+                  ]
+                },
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"author\": \"{{userAdminId}}\",\n  \"body\": \"Amazing shot!\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              }
+            }
+          ]
+        },
+        {
+          "name": "Liste de courses",
+          "item": [
+            {
+              "name": "Lister liste de courses (GET)",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{baseUrl}}/events/{{eventId}}/shopping-list",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "events",
+                    "{{eventId}}",
+                    "shopping-list"
+                  ]
+                }
+              }
+            },
+            {
+              "name": "Ajouter element liste de courses (POST)",
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/events/{{eventId}}/shopping-list",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "events",
+                    "{{eventId}}",
+                    "shopping-list"
+                  ]
+                },
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"contributor\": \"{{userMemberId}}\",\n  \"name\": \"Homemade cake\",\n  \"quantity\": \"2\",\n  \"arrivalTime\": \"18:30\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "type": "text/javascript",
+                    "exec": [
+                      "pm.test(\"Status 201\", function () {",
+                      "  pm.response.to.have.status(201);",
+                      "});",
+                      "var json = {};",
+                      "try { json = pm.response.json(); } catch (err) { json = {}; }",
+                      "var itemId = json.id || json._id;",
+                      "if (itemId) {",
+                      "  pm.collectionVariables.set(\"shoppingItemId\", String(itemId));",
+                      "}"
+                    ]
+                  }
+                }
+              ]
+            },
+            {
+              "name": "Supprimer element liste de courses (DELETE)",
+              "request": {
+                "method": "DELETE",
+                "header": [],
+                "url": {
+                  "raw": "{{baseUrl}}/events/{{eventId}}/shopping-list/{{shoppingItemId}}",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "events",
+                    "{{eventId}}",
+                    "shopping-list",
+                    "{{shoppingItemId}}"
+                  ]
+                }
+              },
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "type": "text/javascript",
+                    "exec": [
+                      "pm.test(\"Status 200\", function () {",
+                      "  pm.response.to.have.status(200);",
+                      "});",
+                      "pm.collectionVariables.set(\"shoppingItemId\", \"\");"
+                    ]
+                  }
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "name": "Covoiturage",
+          "item": [
+            {
+              "name": "Lister offres covoiturage (GET)",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{baseUrl}}/events/{{eventId}}/carpool",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "events",
+                    "{{eventId}}",
+                    "carpool"
+                  ]
+                }
+              }
+            },
+            {
+              "name": "Creer offre covoiturage (POST)",
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/events/{{eventId}}/carpool",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "events",
+                    "{{eventId}}",
+                    "carpool"
+                  ]
+                },
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"driver\": \"{{userMemberId}}\",\n  \"departureLocation\": \"Gare Part-Dieu\",\n  \"departureTime\": \"2025-07-01T17:00:00.000Z\",\n  \"price\": 10,\n  \"availableSeats\": 3,\n  \"maxDeviationMinutes\": 20,\n  \"notes\": \"Can pick up near Bellecour\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "type": "text/javascript",
+                    "exec": [
+                      "pm.test(\"Status 201\", function () {",
+                      "  pm.response.to.have.status(201);",
+                      "});",
+                      "var json = {};",
+                      "try { json = pm.response.json(); } catch (err) { json = {}; }",
+                      "var offerId = json.id || json._id;",
+                      "if (offerId) {",
+                      "  pm.collectionVariables.set(\"carpoolOfferId\", String(offerId));",
+                      "}"
+                    ]
+                  }
+                }
+              ]
+            },
+            {
+              "name": "Supprimer offre covoiturage (DELETE)",
+              "request": {
+                "method": "DELETE",
+                "header": [],
+                "url": {
+                  "raw": "{{baseUrl}}/events/{{eventId}}/carpool/{{carpoolOfferId}}",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "events",
+                    "{{eventId}}",
+                    "carpool",
+                    "{{carpoolOfferId}}"
+                  ]
+                }
+              },
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "type": "text/javascript",
+                    "exec": [
+                      "pm.test(\"Status 200\", function () {",
+                      "  pm.response.to.have.status(200);",
+                      "});",
+                      "pm.collectionVariables.set(\"carpoolOfferId\", \"\");"
+                    ]
+                  }
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "name": "Discussions evenementielles",
+          "item": [
+            {
+              "name": "Creer discussion evenementielle (POST)",
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/events/{{eventId}}/discussions",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "events",
+                    "{{eventId}}",
+                    "discussions"
+                  ]
+                },
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"title\": \"Logistics Q&A\",\n  \"createdBy\": \"{{userMemberId}}\",\n  \"message\": \"Any questions about the venue?\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "type": "text/javascript",
+                    "exec": [
+                      "pm.test(\"Status 201\", function () {",
+                      "  pm.response.to.have.status(201);",
+                      "});",
+                      "var json = {};",
+                      "try { json = pm.response.json(); } catch (err) { json = {}; }",
+                      "var threadId = json.id || json._id;",
+                      "if (threadId) {",
+                      "  pm.collectionVariables.set(\"eventThreadId\", String(threadId));",
+                      "}"
+                    ]
+                  }
+                }
+              ]
+            },
+            {
+              "name": "Lister discussions evenementielles (GET)",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{baseUrl}}/events/{{eventId}}/discussions",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "events",
+                    "{{eventId}}",
+                    "discussions"
+                  ]
+                }
+              }
+            },
+            {
+              "name": "Publier message discussion evenementielle (POST)",
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/events/{{eventId}}/discussions/{{eventThreadId}}/messages",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "events",
+                    "{{eventId}}",
+                    "discussions",
+                    "{{eventThreadId}}",
+                    "messages"
+                  ]
+                },
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"author\": \"{{userAdminId}}\",\n  \"content\": \"Parking opens at 17:30.\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "type": "text/javascript",
+                    "exec": [
+                      "pm.test(\"Status 201\", function () {",
+                      "  pm.response.to.have.status(201);",
+                      "});",
+                      "var json = {};",
+                      "try { json = pm.response.json(); } catch (err) { json = {}; }",
+                      "if (json.messages && Array.isArray(json.messages)) {",
+                      "  var last = json.messages[json.messages.length - 1];",
+                      "  if (last) {",
+                      "    var messageId = last._id || last.id;",
+                      "    if (messageId) {",
+                      "      pm.collectionVariables.set(\"eventMessageId\", String(messageId));",
+                      "    }",
+                      "  }",
+                      "}"
+                    ]
+                  }
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:3000",
+      "type": "string"
+    },
+    {
+      "key": "userAdminId",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "userMemberId",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "userGuestId",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "groupId",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "groupAdminMembershipId",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "groupMemberMembershipId",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "groupGuestMembershipId",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "groupEventId",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "groupThreadId",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "groupMessageId",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "eventId",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "participantMemberId",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "participantGuestId",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "pollId",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "pollQuestionId",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "pollOptionId",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "ticketTypeId",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "albumId",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "photoId",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "shoppingItemId",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "carpoolOfferId",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "eventThreadId",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "eventMessageId",
+      "value": "",
+      "type": "string"
+    }
+  ]
+}
