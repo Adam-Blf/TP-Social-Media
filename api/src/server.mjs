@@ -5,6 +5,7 @@ import bodyParser from 'body-parser';
 import compression from 'compression';
 import cors from 'cors';
 import helmet from 'helmet';
+import rateLimit from 'express-rate-limit';
 
 // Core
 import config from './config.mjs';
@@ -14,12 +15,12 @@ import buildModels from './models/index.mjs';
 const Server = class Server {
   constructor() {
     this.app = express();
-    this.config = config[process.argv[2]] || config.development;
+    this.config = config;
     this.models = null;
     this.hasSigintHandler = false;
   }
 
-  async dbConnect(uri = this.config.mongodb) {
+  async dbConnect(uri = this.config.mongodbUri) {
     try {
       const connection = mongoose.createConnection(uri, {
         autoIndex: true
@@ -68,6 +69,7 @@ const Server = class Server {
   }
 
   middleware() {
+    // Request logging
     this.app.use((req, res, next) => {
       const start = Date.now();
       res.on('finish', () => {
@@ -76,31 +78,72 @@ const Server = class Server {
       });
       next();
     });
+
+    // Rate limiting
+    const limiter = rateLimit({
+      windowMs: this.config.rateLimit.windowMinutes * 60 * 1000,
+      max: this.config.rateLimit.max,
+      message: { error: 'Too many requests, please try again later.' },
+      standardHeaders: true,
+      legacyHeaders: false,
+    });
+    this.app.use(limiter);
+
+    // CORS configuration
+    const corsOptions = this.config.corsAllowedOrigins.length > 0
+      ? {
+          origin: (origin, callback) => {
+            if (!origin || this.config.corsAllowedOrigins.includes(origin)) {
+              callback(null, true);
+            } else {
+              callback(new Error('Not allowed by CORS'));
+            }
+          },
+          credentials: true
+        }
+      : {}; // Allow all origins in development
+
+    this.app.use(cors(corsOptions));
     this.app.use(compression());
-    this.app.use(cors());
     this.app.use(bodyParser.urlencoded({ extended: true }));
     this.app.use(bodyParser.json());
   }
 
   routes() {
+    // Health check
+    this.app.get('/health', (req, res) => {
+      res.json({
+        status: 'ok',
+        environment: this.config.nodeEnv,
+        timestamp: new Date().toISOString()
+      });
+    });
+
     // Routes principales
     registerRoutes(this.app, this.models);
 
-    // ➕ Route spéciale pour créer une collection depuis Postman
-    this.app.post('/create-collection', async (req, res) => {
-      const { name } = req.body;
+    // Admin-protected collection creation endpoint
+    if (this.config.adminApiToken) {
+      this.app.post('/create-collection', async (req, res) => {
+        const { name } = req.body;
+        const token = req.headers['x-admin-token'];
 
-      if (!name) {
-        return res.status(400).json({ error: "Le champ 'name' est requis." });
-      }
+        if (!token || token !== this.config.adminApiToken) {
+          return res.status(403).json({ error: 'Forbidden: invalid or missing admin token' });
+        }
 
-      try {
-        await this.connect.db.createCollection(name);
-        return res.status(201).json({ message: `✅ Collection '${name}' créée avec succès dans MongoDB.` });
-      } catch (err) {
-        return res.status(500).json({ error: err.message });
-      }
-    });
+        if (!name || typeof name !== 'string' || !/^[a-zA-Z0-9_-]+$/.test(name)) {
+          return res.status(400).json({ error: "Invalid collection name. Use alphanumeric characters, hyphens, and underscores only." });
+        }
+
+        try {
+          await this.connect.db.createCollection(name);
+          return res.status(201).json({ message: `Collection '${name}' created successfully.` });
+        } catch (err) {
+          return res.status(500).json({ error: err.message });
+        }
+      });
+    }
 
     // Gestion des routes inexistantes
     this.app.use((req, res) => {
@@ -135,9 +178,14 @@ const Server = class Server {
       this.security();
       this.middleware();
       this.routes();
-      this.app.listen(this.config.port);
+      this.app.listen(this.config.port, () => {
+        console.log(`[SERVER] Running in ${this.config.nodeEnv} mode on port ${this.config.port}`);
+        console.log(`[SERVER] MongoDB: ${this.config.mongodbUri.replace(/\/\/[^:]+:[^@]+@/, '//<credentials>@')}`);
+        console.log(`[SERVER] Admin endpoint: ${this.config.adminApiToken ? 'enabled' : 'disabled'}`);
+      });
     } catch (err) {
       console.error(`[ERROR] Server -> ${err}`);
+      process.exit(1);
     }
   }
 };
