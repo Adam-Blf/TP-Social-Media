@@ -1,0 +1,11 @@
+services:
+  - type: web
+    name: social-media-api
+    runtime: node
+    buildCommand: cd api && npm install
+    startCommand: cd api && npm run prod
+    plan: free
+    branch: main
+    envVars:
+      - key: NODE_VERSION
+        value: 20.11.0
