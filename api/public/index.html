@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Social Media API - Documentation</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        .gradient-bg {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+        .endpoint-card {
+            transition: transform 0.2s;
+        }
+        .endpoint-card:hover {
+            transform: translateY(-5px);
+        }
+        .method-get { color: #61affe; border-color: #61affe; }
+        .method-post { color: #49cc90; border-color: #49cc90; }
+        .method-put { color: #fca130; border-color: #fca130; }
+        .method-delete { color: #f93e3e; border-color: #f93e3e; }
+    </style>
+</head>
+<body class="bg-gray-50 text-gray-800">
+
+    <!-- Hero Section -->
+    <div class="gradient-bg text-white py-20">
+        <div class="container mx-auto px-6 text-center">
+            <h1 class="text-5xl font-bold mb-4">Social Media API</h1>
+            <p class="text-xl opacity-90 mb-8">Une API RESTful robuste pour gérer événements, communautés et interactions sociales.</p>
+            <div class="flex justify-center space-x-4">
+                <a href="#endpoints" class="bg-white text-purple-700 font-bold py-3 px-8 rounded-full shadow-lg hover:bg-gray-100 transition">
+                    Explorer les Endpoints
+                </a>
+                <a href="https://github.com/Adam-Blf/TP-Social-Media" target="_blank" class="border-2 border-white text-white font-bold py-3 px-8 rounded-full hover:bg-white hover:text-purple-700 transition">
+                    <i class="fab fa-github mr-2"></i>GitHub
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Features Grid -->
+    <div class="container mx-auto px-6 py-16">
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <div class="bg-white p-8 rounded-xl shadow-md text-center">
+                <div class="text-purple-600 text-4xl mb-4"><i class="fas fa-users"></i></div>
+                <h3 class="text-xl font-bold mb-2">Communautés</h3>
+                <p class="text-gray-600">Gestion complète des utilisateurs, groupes et rôles avec authentification sécurisée.</p>
+            </div>
+            <div class="bg-white p-8 rounded-xl shadow-md text-center">
+                <div class="text-pink-600 text-4xl mb-4"><i class="fas fa-calendar-alt"></i></div>
+                <h3 class="text-xl font-bold mb-2">Événements</h3>
+                <p class="text-gray-600">Création d'événements, billetterie intégrée et gestion des participants.</p>
+            </div>
+            <div class="bg-white p-8 rounded-xl shadow-md text-center">
+                <div class="text-blue-600 text-4xl mb-4"><i class="fas fa-car"></i></div>
+                <h3 class="text-xl font-bold mb-2">Services</h3>
+                <p class="text-gray-600">Modules intégrés pour le covoiturage, les sondages et le partage de photos.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- API Documentation Section -->
+    <div id="endpoints" class="container mx-auto px-6 py-10">
+        <h2 class="text-3xl font-bold mb-10 text-center text-gray-800">Documentation API</h2>
+
+        <!-- Auth Section -->
+        <div class="mb-12">
+            <h3 class="text-2xl font-bold mb-6 border-b pb-2">🔐 Authentification</h3>
+            <div class="grid gap-4">
+                <!-- Endpoint -->
+                <div class="endpoint-card bg-white p-6 rounded-lg shadow border-l-4 border-green-500">
+                    <div class="flex items-center justify-between mb-2">
+                        <span class="font-mono font-bold text-green-600">POST /api/auth/register</span>
+                        <span class="bg-green-100 text-green-800 text-xs px-2 py-1 rounded">Public</span>
+                    </div>
+                    <p class="text-gray-600">Inscription d'un nouvel utilisateur.</p>
+                </div>
+                <div class="endpoint-card bg-white p-6 rounded-lg shadow border-l-4 border-green-500">
+                    <div class="flex items-center justify-between mb-2">
+                        <span class="font-mono font-bold text-green-600">POST /api/auth/login</span>
+                        <span class="bg-green-100 text-green-800 text-xs px-2 py-1 rounded">Public</span>
+                    </div>
+                    <p class="text-gray-600">Connexion et récupération du token JWT.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Users Section -->
+        <div class="mb-12">
+            <h3 class="text-2xl font-bold mb-6 border-b pb-2">👤 Utilisateurs</h3>
+            <div class="grid gap-4">
+                <div class="endpoint-card bg-white p-6 rounded-lg shadow border-l-4 border-blue-500">
+                    <div class="flex items-center justify-between mb-2">
+                        <span class="font-mono font-bold text-blue-600">GET /api/users/profile</span>
+                        <span class="bg-yellow-100 text-yellow-800 text-xs px-2 py-1 rounded">Auth Required</span>
+                    </div>
+                    <p class="text-gray-600">Récupérer le profil de l'utilisateur connecté.</p>
+                </div>
+                <div class="endpoint-card bg-white p-6 rounded-lg shadow border-l-4 border-orange-500">
+                    <div class="flex items-center justify-between mb-2">
+                        <span class="font-mono font-bold text-orange-600">PUT /api/users/update</span>
+                        <span class="bg-yellow-100 text-yellow-800 text-xs px-2 py-1 rounded">Auth Required</span>
+                    </div>
+                    <p class="text-gray-600">Mettre à jour les informations du profil.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Events Section -->
+        <div class="mb-12">
+            <h3 class="text-2xl font-bold mb-6 border-b pb-2">🎉 Événements</h3>
+            <div class="grid gap-4">
+                <div class="endpoint-card bg-white p-6 rounded-lg shadow border-l-4 border-blue-500">
+                    <div class="flex items-center justify-between mb-2">
+                        <span class="font-mono font-bold text-blue-600">GET /api/events</span>
+                        <span class="bg-green-100 text-green-800 text-xs px-2 py-1 rounded">Public</span>
+                    </div>
+                    <p class="text-gray-600">Lister tous les événements publics.</p>
+                </div>
+                <div class="endpoint-card bg-white p-6 rounded-lg shadow border-l-4 border-green-500">
+                    <div class="flex items-center justify-between mb-2">
+                        <span class="font-mono font-bold text-green-600">POST /api/events</span>
+                        <span class="bg-yellow-100 text-yellow-800 text-xs px-2 py-1 rounded">Auth Required</span>
+                    </div>
+                    <p class="text-gray-600">Créer un nouvel événement.</p>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-gray-800 text-white py-8">
+        <div class="container mx-auto px-6 text-center">
+            <p>&copy; 2025 Social Media API. Developed by Adam-Blf.</p>
+        </div>
+    </footer>
+
+</body>
+</html>

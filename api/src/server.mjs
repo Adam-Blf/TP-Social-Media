@@ -6,6 +6,11 @@ import compression from 'compression';
 import cors from 'cors';
 import helmet from 'helmet';
 import rateLimit from 'express-rate-limit';
+import path from 'path';
+import { fileURLToPath } from 'url';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 // Core
 import config from './config.mjs';
@@ -107,6 +112,9 @@ const Server = class Server {
     this.app.use(compression());
     this.app.use(bodyParser.urlencoded({ extended: true }));
     this.app.use(bodyParser.json());
+    
+    // Serve static files from public directory
+    this.app.use(express.static(path.join(__dirname, '../public')));
   }
 
   routes() {
