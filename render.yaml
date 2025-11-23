@@ -1,9 +1,10 @@
 services:
   - type: web
-    name: social-media-api
+    name: social-media-api-demo
     runtime: node
-    buildCommand: cd api && npm install
-    startCommand: cd api && npm run prod
+    rootDir: api
+    buildCommand: npm install
+    startCommand: npm run prod
     plan: free
     branch: main
     envVars:
