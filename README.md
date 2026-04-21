@@ -1,5 +1,11 @@
 # TP Social Media
 
+![Status](https://img.shields.io/badge/status-academic-blue)
+![Node.js](https://img.shields.io/badge/Node.js-20-339933?logo=node.js&logoColor=white)
+![Express](https://img.shields.io/badge/Express-4-000000?logo=express&logoColor=white)
+![MongoDB](https://img.shields.io/badge/MongoDB-Mongoose-47A248?logo=mongodb&logoColor=white)
+![Render](https://img.shields.io/badge/deploy-Render-46E3B7?logo=render&logoColor=white)
+
 Backend REST d'une API reseau social. TP Efrei, stack Node.js + Express + MongoDB avec securite et validation.
 
 ## Stack
