@@ -1,21 +1,50 @@
-[![LinkedIn](https://img.shields.io/badge/LinkedIn-0077B5?style=for-the-badge&logo=linkedin&logoColor=white)](https://www.linkedin.com/in/adambeloucif/) ![Visitor Badge](https://visitor-badge.laobi.icu/badge?page_id=Adam-Blf.TP-Social-Media)
+# TP Social Media
 
+Backend REST d'une API reseau social. TP Efrei, stack Node.js + Express + MongoDB avec securite et validation.
 
-![Dernier commit](https://img.shields.io/github/last-commit/Adam-Blf/TP-Social-Media?style=flat&logo=git&logoColor=white&color=0080ff&label=Dernier%20commit) ![Langage principal](https://img.shields.io/github/languages/top/Adam-Blf/TP-Social-Media?style=flat&logo=git&logoColor=white&color=0080ff&label=Langage%20principal) ![Nombre de langages](https://img.shields.io/github/languages/count/Adam-Blf/TP-Social-Media?style=flat&logo=git&logoColor=white&color=0080ff&label=Nombre%20de%20langages)
+## Stack
 
-### Construit avec les outils et technologies : 
+- Node.js 20 (ES modules)
+- Express 4 + body-parser + compression
+- MongoDB via Mongoose 7
+- Securite · helmet + cors + express-rate-limit + express-validator
+- dotenv pour la configuration
+- Deploiement · Render (voir `render.yaml`)
 
-![JavaScript](https://img.shields.io/badge/-JavaScript-0080ff?style=flat) ![HTML](https://img.shields.io/badge/-HTML-0080ff?style=flat)
+## Structure
 
-🇫🇷 Français | 🇬🇧 Anglais | 🇪🇸 Espagnol | 🇮🇹 Italien | 🇵🇹 Portugais | 🇷🇺 Russe | 🇩🇪 Allemand | 🇹🇷 Turc
+- `api/` · source de l'API Express
+  - `index.mjs` · entry point
+  - `src/` · routes, controllers, models, middlewares
+  - `public/` · assets statiques
+  - `docs/` · documentation API
+- `render.yaml` · config deploiement Render (plan free)
 
-# TP-Social-Media
+## Lancement
 
-## Overview
-Project files for TP-Social-Media.
+```bash
+git clone https://github.com/Adam-Blf/TP-Social-Media
+cd TP-Social-Media/api
+npm install
+cp .env.example .env   # puis renseigner MONGO_URI
+npm run dev            # lint + dev
+npm run prod           # production
+```
+
+## Endpoints principaux
+
+- `POST /auth/register` · creation compte
+- `POST /auth/login` · authentification
+- `GET /posts` · liste des posts
+- `POST /posts` · creation post
+- Validation via express-validator, rate-limiting actif
+
+## Licence
+
+MIT
 
 ---
 
 <p align="center">
-  <sub>Par <a href="https://adam.beloucif.com">Adam Beloucif</a> · Data Engineer & Fullstack Developer · <a href="https://github.com/Adam-Blf">GitHub</a></sub>
+  <sub>Par <a href="https://adam.beloucif.com">Adam Beloucif</a> · Data Engineer & Fullstack Developer · <a href="https://github.com/Adam-Blf">GitHub</a> · <a href="https://www.linkedin.com/in/adambeloucif/">LinkedIn</a></sub>
 </p>
