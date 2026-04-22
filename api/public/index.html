@@ -3,23 +3,119 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Social Media API - Documentation</title>
+    <title>Social Media API</title>
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
     <style>
+        :root {
+            --warm-bg: #f7f3ee;
+            --warm-paper: #faf7f2;
+            --ink: #1a1714;
+            --ink-muted: #6b6258;
+            --accent: #c0392b;
+        }
+
+        body {
+            background-color: var(--warm-bg) !important;
+            color: var(--ink) !important;
+            font-family: 'DM Mono', monospace;
+        }
+
         .gradient-bg {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: var(--warm-paper);
+            border-bottom: 1px solid #d9d0c5;
         }
+
+        .gradient-bg h1 {
+            font-family: 'Instrument Serif', serif;
+            font-style: italic;
+            color: var(--ink) !important;
+            font-size: 3.5rem;
+            letter-spacing: -0.02em;
+            line-height: 1.1;
+        }
+
+        .gradient-bg p {
+            color: var(--ink-muted) !important;
+            opacity: 1 !important;
+            font-size: 1rem;
+        }
+
+        .gradient-bg a.bg-white {
+            background: var(--ink) !important;
+            color: var(--warm-bg) !important;
+            border-radius: 2px !important;
+            font-family: 'DM Mono', monospace;
+            font-size: 0.85rem;
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+        }
+
+        .gradient-bg a.bg-white:hover {
+            background: var(--accent) !important;
+        }
+
+        .gradient-bg a.border-2 {
+            border-color: var(--ink) !important;
+            color: var(--ink) !important;
+            border-radius: 2px !important;
+            font-family: 'DM Mono', monospace;
+            font-size: 0.85rem;
+            text-transform: uppercase;
+        }
+
+        .gradient-bg a.border-2:hover {
+            background: var(--ink) !important;
+            color: var(--warm-bg) !important;
+        }
+
+        .bg-white {
+            background-color: var(--warm-paper) !important;
+            border: 1px solid #d9d0c5 !important;
+            box-shadow: none !important;
+        }
+
         .endpoint-card {
-            transition: transform 0.2s;
+            transition: border-color 0.15s;
         }
+
         .endpoint-card:hover {
-            transform: translateY(-5px);
+            transform: none;
+            border-left-width: 4px;
         }
-        .method-get { color: #61affe; border-color: #61affe; }
-        .method-post { color: #49cc90; border-color: #49cc90; }
-        .method-put { color: #fca130; border-color: #fca130; }
-        .method-delete { color: #f93e3e; border-color: #f93e3e; }
+
+        h2.text-gray-800, h3 {
+            font-family: 'Instrument Serif', serif;
+            font-style: italic;
+            color: var(--ink) !important;
+        }
+
+        .font-mono {
+            font-family: 'DM Mono', monospace !important;
+        }
+
+        .text-gray-600 {
+            color: var(--ink-muted) !important;
+        }
+
+        footer.bg-gray-800 {
+            background-color: var(--ink) !important;
+            border-top: 3px solid var(--accent);
+        }
+
+        .method-get { color: #1565c0; border-color: #1565c0; }
+        .method-post { color: #2e7d32; border-color: #2e7d32; }
+        .method-put { color: #e65100; border-color: #e65100; }
+        .method-delete { color: var(--accent); border-color: var(--accent); }
+
+        .border-b { border-color: #d9d0c5 !important; }
+
+        .text-purple-600 { color: var(--accent) !important; }
+        .text-pink-600 { color: #8b5e3c !important; }
+        .text-blue-600 { color: #1565c0 !important; }
     </style>
 </head>
 <body class="bg-gray-50 text-gray-800">
