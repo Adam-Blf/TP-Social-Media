@@ -1,3 +1,5 @@
+![version](https://img.shields.io/badge/version-1.0.1-DC0A2D?style=flat-square) ![node](https://img.shields.io/badge/node-20-141418?style=flat-square) ![license](https://img.shields.io/badge/license-MIT-424242?style=flat-square) ![type](https://img.shields.io/badge/type-api-4CAF50?style=flat-square)
+
 # TP Social Media
 
 ![Status](https://img.shields.io/badge/status-academic-blue)
