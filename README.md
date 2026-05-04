@@ -2,6 +2,11 @@
 
 # TP Social Media
 
+<!-- adam-badges:start -->
+[![commits](https://img.shields.io/github/commit-activity/t/Adam-Blf/TP-Social-Media?color=001329&label=commits&style=flat-square)](https://github.com/Adam-Blf/TP-Social-Media/commits) [![visites](https://hits.sh/github.com/Adam-Blf/TP-Social-Media.svg?style=flat-square&label=visites&color=001329)](https://hits.sh/github.com/Adam-Blf/TP-Social-Media/) [![last commit](https://img.shields.io/github/last-commit/Adam-Blf/TP-Social-Media?color=D4A437&style=flat-square&label=dernier%20push)](https://github.com/Adam-Blf/TP-Social-Media/commits) [![top language](https://img.shields.io/github/languages/top/Adam-Blf/TP-Social-Media?style=flat-square)](https://github.com/Adam-Blf/TP-Social-Media) [![license](https://img.shields.io/github/license/Adam-Blf/TP-Social-Media?style=flat-square&color=D4A437)](LICENSE)
+<!-- adam-badges:end -->
+
+
 ![Status](https://img.shields.io/badge/status-academic-blue)
 ![Node.js](https://img.shields.io/badge/Node.js-20-339933?logo=node.js&logoColor=white)
 ![Express](https://img.shields.io/badge/Express-4-000000?logo=express&logoColor=white)
