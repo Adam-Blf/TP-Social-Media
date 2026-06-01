@@ -15,6 +15,28 @@
 
 Backend REST d'une API reseau social. TP Efrei, stack Node.js + Express + MongoDB avec securite et validation.
 
+## Architecture
+
+```mermaid
+flowchart TB
+    CLIENT["Client HTTP<br/>fetch · Postman"]
+    ENTRY["index.mjs<br/>entry point · bootstrap"]
+    SERVER["server.mjs<br/>Express · helmet · cors · rate-limit"]
+    ROUTES["routes.mjs<br/>enregistrement des routes"]
+    CTRL["controllers/<br/>users · groups · events · albums · polls"]
+    VALID["validators.mjs<br/>express-validator"]
+    MODELS["models/<br/>Mongoose · user · event · poll · ticket"]
+    MONGO["MongoDB<br/>via Mongoose 7"]
+
+    CLIENT --> ENTRY
+    ENTRY --> SERVER
+    SERVER --> ROUTES
+    ROUTES --> CTRL
+    CTRL --> VALID
+    CTRL --> MODELS
+    MODELS --> MONGO
+```
+
 ## Stack
 
 - Node.js 20 (ES modules)
