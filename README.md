@@ -19,13 +19,13 @@ Backend REST d'une API reseau social. TP Efrei, stack Node.js + Express + MongoD
 
 ```mermaid
 flowchart TB
-    CLIENT["Client HTTP<br/>fetch · Postman"]
-    ENTRY["index.mjs<br/>entry point · bootstrap"]
-    SERVER["server.mjs<br/>Express · helmet · cors · rate-limit"]
+    CLIENT["Client HTTP<br/>fetch - Postman"]
+    ENTRY["index.mjs<br/>entry point - bootstrap"]
+    SERVER["server.mjs<br/>Express - helmet - cors - rate-limit"]
     ROUTES["routes.mjs<br/>enregistrement des routes"]
-    CTRL["controllers/<br/>users · groups · events · albums · polls"]
+    CTRL["controllers/<br/>users - groups - events - albums - polls"]
     VALID["validators.mjs<br/>express-validator"]
-    MODELS["models/<br/>Mongoose · user · event · poll · ticket"]
+    MODELS["models/<br/>Mongoose - user - event - poll - ticket"]
     MONGO["MongoDB<br/>via Mongoose 7"]
 
     CLIENT --> ENTRY
@@ -42,18 +42,18 @@ flowchart TB
 - Node.js 20 (ES modules)
 - Express 4 + body-parser + compression
 - MongoDB via Mongoose 7
-- Securite · helmet + cors + express-rate-limit + express-validator
+- Securite - helmet + cors + express-rate-limit + express-validator
 - dotenv pour la configuration
-- Deploiement · Render (voir `render.yaml`)
+- Deploiement - Render (voir `render.yaml`)
 
 ## Structure
 
-- `api/` · source de l'API Express
-  - `index.mjs` · entry point
-  - `src/` · routes, controllers, models, middlewares
-  - `public/` · assets statiques
-  - `docs/` · documentation API
-- `render.yaml` · config deploiement Render (plan free)
+- `api/` - source de l'API Express
+  - `index.mjs` - entry point
+  - `src/` - routes, controllers, models, middlewares
+  - `public/` - assets statiques
+  - `docs/` - documentation API
+- `render.yaml` - config deploiement Render (plan free)
 
 ## Lancement
 
@@ -68,10 +68,10 @@ npm run prod           # production
 
 ## Endpoints principaux
 
-- `POST /auth/register` · creation compte
-- `POST /auth/login` · authentification
-- `GET /posts` · liste des posts
-- `POST /posts` · creation post
+- `POST /auth/register` - creation compte
+- `POST /auth/login` - authentification
+- `GET /posts` - liste des posts
+- `POST /posts` - creation post
 - Validation via express-validator, rate-limiting actif
 
 ## Licence
@@ -81,7 +81,7 @@ MIT
 ---
 
 <p align="center">
-  <sub>Par <a href="https://adam.beloucif.com">Adam Beloucif</a> · Data Engineer & Fullstack Developer · <a href="https://github.com/Adam-Blf">GitHub</a> · <a href="https://www.linkedin.com/in/adambeloucif/">LinkedIn</a></sub>
+  <sub>Par <a href="https://adam.beloucif.com">Adam Beloucif</a> - Data Engineer & Fullstack Developer - <a href="https://github.com/Adam-Blf">GitHub</a> - <a href="https://www.linkedin.com/in/adambeloucif/">LinkedIn</a></sub>
 </p>
 
 
